@@ -1,0 +1,4 @@
+runtime: php72
+
+runtime_config:
+  document_root: .

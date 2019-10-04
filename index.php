@@ -7,22 +7,16 @@ $ch = curl_init($iron_url);
 $result = crawlOnePage($ch);
 // echo $result;
 // die();
-$dom = new DOMDocument;
-@$dom->loadHTML($result);
-$dom->saveHTML($dom->documentElement);
+$dom = domParser($result);
 $tag = $dom->getElementsByTagName('a')[0]->nodeValue;
 preg_match('/articles\/(.+)\/draft/', $tag, $m);
 $article_id = $m[1];
 
-
-// var_dump($article_id);
 $form_url = "https://ithelp.ithome.com.tw/articles/$article_id/draft";
 $ch = curl_init($form_url);
 $result = crawlOnePage($ch);
 
-$dom = new DOMDocument;
-@$dom->loadHTML($result);
-$dom->saveHTML($dom->documentElement);
+$dom = domParser($result);
 
 $xpath = new DOMXPath($dom);
 $nodeList = $xpath->query('//input[@name="_token"]');
@@ -50,4 +44,12 @@ $post_data = [
     'tags[3]' => 'restful api',
 ];
 
-publishPost($ch_post, $post_data);
+$output = publishPost($ch_post, $post_data);
+$dom = domParser($output);
+$url = $dom->getElementsByTagName('a')[0]->nodeValue;
+
+if($url == "https://ithelp.ithome.com.tw/articles/$article_id"){
+    echo "Success";
+}else{
+    echo "Failed!!";
+}

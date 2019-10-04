@@ -23,5 +23,12 @@ function publishPost($ch, $post_data){
 
     $output = curl_exec($ch);
     curl_close($ch);
-    echo $output;
+    return $output;
+}
+
+function domParser($result){
+    $dom = new DOMDocument;
+    @$dom->loadHTML($result);
+    $dom->saveHTML($dom->documentElement);
+    return $dom;
 }

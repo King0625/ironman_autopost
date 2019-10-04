@@ -1,0 +1,5 @@
+cron:
+- description: "autopost"
+  url: /
+  schedule: everyday 00:02
+  timezone: Asia/Taipei
