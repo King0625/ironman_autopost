@@ -48,8 +48,23 @@ $output = publishPost($ch_post, $post_data);
 $dom = domParser($output);
 $url = $dom->getElementsByTagName('a')[0]->nodeValue;
 
+define('WEB_HOOK_URL', "https://hooks.slack.com/services/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");
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, WEB_HOOK_URL);
+curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
+curl_setopt($ch, CURLOPT_POST, true);
+
 if($url == "https://ithelp.ithome.com.tw/articles/$article_id"){
-    echo "Success";
+    $json_data = [
+        "text" => "$date 發文成功!! URL: https://ithelp.ithome.com.tw/articles/$article_id"
+    ];
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json_data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+    curl_exec($ch);
 }else{
-    echo "Failed!!";
+    $json_data = [
+        "text" => "發文失敗!! 請重新調整 COOKIE 或其他東西"
+    ];
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json_data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+    curl_exec($ch);
 }
+curl_close($ch);
