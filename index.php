@@ -61,7 +61,7 @@ if($url == "https://ithelp.ithome.com.tw/articles/$article_id"){
     curl_exec($ch);
 }else{
     $json_data = [
-        "text" => "發文失敗!! 請重新調整 COOKIE 或其他東西"
+        "text" => "$date 發文失敗!! 請重新調整 COOKIE 或其他東西"
     ];
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json_data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
     curl_exec($ch);
