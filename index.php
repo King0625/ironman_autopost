@@ -48,7 +48,6 @@ $output = publishPost($ch_post, $post_data);
 $dom = domParser($output);
 $url = $dom->getElementsByTagName('a')[0]->nodeValue;
 
-define('WEB_HOOK_URL', "https://hooks.slack.com/services/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");
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, WEB_HOOK_URL);
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
