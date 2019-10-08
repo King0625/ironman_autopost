@@ -10,6 +10,20 @@ $result = crawlOnePage($ch);
 $dom = domParser($result);
 $tag = $dom->getElementsByTagName('a')[0]->nodeValue;
 preg_match('/articles\/(.+)\/draft/', $tag, $m);
+// var_dump($m);
+if(empty($m)){
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, WEB_HOOK_URL);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
+    curl_setopt($ch, CURLOPT_POST, true);
+    $json_data = [
+        "text" => "$date 發文失敗!! 請重新調整 COOKIE 或其他東西"
+    ];
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($json_data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT));
+    curl_exec($ch);
+    die();
+}
+
 $article_id = $m[1];
 
 $form_url = "https://ithelp.ithome.com.tw/articles/$article_id/draft";
@@ -52,6 +66,8 @@ $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, WEB_HOOK_URL);
 curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
 curl_setopt($ch, CURLOPT_POST, true);
+
+
 
 if($url == "https://ithelp.ithome.com.tw/articles/$article_id"){
     $json_data = [
